@@ -1,103 +1,123 @@
-import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
+import React from "react";
+import { makeStyles} from '@material-ui/core/styles';
+import Slider from "react-slick";
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Axios from 'axios';
 
-const tutorialSteps = [
-  {
-    label: 'Áries',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
-  },
-  {
-    label: 'NeONBRAND Digital Marketing, Las Vegas, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-];
+import config from './config';
+import './App.css';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    maxWidth: 400,
-    flexGrow: 1,
+  paper: {
+    background: '#FCE6CC'
   },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    height: 50,
-    paddingLeft: theme.spacing(4),
-    backgroundColor: theme.palette.background.default,
+  externalBorder:{
+    backgroundImage: 'linear-gradient(138deg, #f9b502, #f17e01)',
+    padding: '3px'
   },
-  img: {
-    height: 255,
-    maxWidth: 400,
-    overflow: 'hidden',
-    display: 'block',
-    width: '100%',
-  },
+  signName:{
+    color: '#f17f01',
+    fontWeight: 'bold',
+    fontSize: '30px'
+    }
 }));
 
-export default function TextMobileStepper() {
+
+function Carousel() {
+  
   const classes = useStyles();
-  const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = tutorialSteps.length;
 
-  function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+  //Axios function to catch the sign
+  async function getSign(sign){
+    try{
+      const response =  await Axios.get(config.apiURL+sign+'/dia');
+      console.log(response);
+    }
+    catch(error){
+      console.error(error);
+    }
   }
 
-  function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  }
+  //Fuctions for personalized buttons
+  function NextArrow(props){
+    const {onClick } = props;
 
+    return (
+        <Button onClick={onClick}>
+            <KeyboardArrowRight />
+        </Button>
+    );
+  };
+  function PrevArrow(props){
+    const {onClick } = props;
+
+    return (
+        <Button onClick={onClick}>
+            <KeyboardArrowLeft />
+        </Button>
+    );
+  };
+
+  //For slick configurations
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight:false,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />
+
+  };
   return (
-    <div className={classes.root}>
-      <Paper square elevation={0} className={classes.header}>
-        <Typography>{tutorialSteps[activeStep].label}</Typography>
+    <div className={classes.externalBorder}>
+      <Paper className={classes.paper}>
+        <Slider {...settings}>
+          <div>
+            <div className={classes.signName}>Áries</div>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Touro</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Gêmeos</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Câncer</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Leão</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Virgem</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Libra</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Escorpião</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Sagitário</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Capricórnio</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Áquario</Typography>
+          </div>
+          <div>
+            <Typography className={classes.signName}>Peixes</Typography>
+          </div>
+        </Slider>
       </Paper>
-      <img
-        className={classes.img}
-        src={tutorialSteps[activeStep].imgPath}
-        alt={tutorialSteps[activeStep].label}
-      />
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        variant="text"
-        activeStep={activeStep}
-        nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-            Next
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            Back
-          </Button>
-        }
-      />
     </div>
   );
 }
+
+export default Carousel;
