@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from  'prop-types';
 import Axios from 'axios';
+import Slider from "react-slick";
 
 //From Material-UI
 import {withStyles} from '@material-ui/core/styles';
-import Slider from "react-slick";
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -43,7 +42,8 @@ const useStyles = theme => ({
   signName:{
     color: '#f17f01',
     fontWeight: 'bold',
-    fontSize: '30px'
+    fontSize: '30px',
+    padding: '15px'
     },
   icon:{
     width: '57px',
@@ -61,30 +61,36 @@ function NextArrow(props){
   const {onClick, className, style } = props;
 
   return (
-      <Button onClick={onClick}>
-          <KeyboardArrowRight 
-            className={className} 
-            style={{...style, width:'50px', 
-                              height: '50px', 
-                              color: 'black',
-                              }}
+         <KeyboardArrowRight onClick={onClick}
+                            className={className} 
+                            style={{...style, width:'50px', 
+                                              height: '50px', 
+                                              color: 'black',
+                                              position: 'absolute',
+                                              right: '30px',
+                                              top:'40px'}}
           />
-      </Button>
+
   );
 };
 function PrevArrow(props){
   const {onClick, className, style } = props;
 
   return (
-      <Button onClick={onClick}>
+    
           <KeyboardArrowLeft 
+            onClick={onClick}
             className={className} 
             style={{...style, width:'50px', 
                               height: '50px', 
                               color: 'black',
+                              position: 'absolute',
+                              top: '40px',
+                              left: '30px',
+                              zIndex: '1000'
                              }} 
            />
-      </Button>
+
   );
 };
 
@@ -130,7 +136,7 @@ componentWillMount(){
   this.getSign('sagittarius');
   this.getSign('capricorn');
   this.getSign('aquarius');
-    this.getSign('pisces');
+  this.getSign('pisces');
 }
   
   render(){
